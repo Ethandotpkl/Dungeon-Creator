@@ -18,7 +18,7 @@ screen.fill((0, 0, 0))
 
 shapepos = (mapwidth / 2, mapheight / 2)
 nextpos = ((mapwidth / 2) + 14, (mapheight / 2))
-print(nextpos)
+#print(nextpos)
 shape_size = (chunksize, chunksize)
 shape_color = (255, 255, 255)
 
@@ -52,27 +52,51 @@ def cardinal_check(DM, check_pos, cur_cell):
     if pos != cur_cell:
         if DM[pos[0]][pos[1]] != 0:
             return False
+    return True
 
 #Create a randomly size room
-def makeroom(DM, Startpoint):
-    roomsize = random.choice(4, 36)
+def makeroom(DM, start_pos):
+    roomsize = random.randrange(4, 36)
     cur_size = 1
     #fill in start pos chunk
-    DM[start_pos[0], start_pos[1]] = 1
+    #print(start_pos)
+    DM[start_pos[0]][start_pos[1]] = 1
     cur_cell = start_pos
     while cur_size < roomsize:
         for i in range (-1, 1):
             for j in range(-1, 1):
                 if i != 0 and j != 0:
-                    checkpos = (curr_cell[0] + i, cur_cell[1] + j)
+                    checkpos = (cur_cell[0] + i, cur_cell[1] + j)
+                    if cardinal_check(DM, checkpos, cur_cell) == True:
+                        #print("adding cell")
+                        DM[checkpos[0]][checkpos[1]] = 1
+                        cur_size += 1
+
+makeroom(DM, (50, 50))
+#print(DM)
+rownum = 0
+for row in DM:
+        print(row)
+        colnum = 0
+        for element in row:
+            if element == 1:
+                posX = colnum * 7
+                posY = rownum * 7
+                position = (posX, posY)
+                #print(position)
+                room_fill = pygame.Rect(position, shape_size)
+                screen.fill(shape_color, rect=room_fill)
+            colnum += 1
+        rownum += 1
+
 while True:
     
     for event in pygame.event.get():
         # The pygame.QUIT event happens when someone tries to close the game window.
         if event.type == pygame.QUIT:
             sys.exit()
-
-    screen.fill(shape_color, rect=shape_rect)
-    screen.fill(shape_color, rect=shape_rect2)
-
+    
+    #screen.fill(shape_color, rect=shape_rect)
+    #screen.fill(shape_color, rect=shape_rect2)
+    #pause = input(">>")
     pygame.display.flip()

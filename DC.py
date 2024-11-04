@@ -57,21 +57,22 @@ def cardinal_check(DM, check_pos, cur_cell):
 
 #Create a randomly size room
 def makeroom(DM, start_pos):
-    roomsize = random.randrange(4, 36)
+    roomsize = random.randrange(10, 100)
     cur_size = 1
     #fill in start pos chunk
     #print(start_pos)
     DM[start_pos[0]][start_pos[1]] = 1
     cur_cell = start_pos
-    #while cur_size < roomsize:
-    for i in range (-1, 2):
+    while cur_size < roomsize:
+        print(f"size: {cur_size}, room: {roomsize}")
+        for i in range (-1, 2):
             for j in range(-1, 2):
-                print(f"i: {i}  j: {j}")
                 if not (i == 0 and j == 0):
-                    DM[cur_cell[0] + i][cur_cell[1] + j] = 1
-                    print(f"i: {i}  j: {j}")
-                else:
-                    print("0, 0")
+                    if DM[cur_cell[0] + i][cur_cell[1] + j] != 1:
+                        DM[cur_cell[0] + i][cur_cell[1] + j] = 1
+                        cur_size += 1
+       #cur_cell = (-----y----), (-------x------)
+        cur_cell = (cur_cell[0], cur_cell[1] + 1)
 makeroom(DM, (50, 50))
 #print(DM)
 rownum = 0

@@ -64,15 +64,23 @@ def makeroom(DM, start_pos):
     DM[start_pos[0]][start_pos[1]] = 1
     cur_cell = start_pos
     while cur_size < roomsize:
-        print(f"size: {cur_size}, room: {roomsize}")
+        print(f"size: {cur_size}, room: {roomsize}, cell: {cur_cell}")
+        cur_size += fillneighbors(cur_cell)
         for i in range (-1, 2):
+            for j in range(-1, 2):
+                if not (i == 0 and j == 0):
+                    cur_cell = (cur_cell[0] + i, cur_cell[1] + j)
+        
+def fillneighbors(cur_cell):
+       cur_size = 0
+       for i in range (-1, 2):
             for j in range(-1, 2):
                 if not (i == 0 and j == 0):
                     if DM[cur_cell[0] + i][cur_cell[1] + j] != 1:
                         DM[cur_cell[0] + i][cur_cell[1] + j] = 1
                         cur_size += 1
-       #cur_cell = (-----y----), (-------x------)
-        cur_cell = (cur_cell[0], cur_cell[1] + 1)
+       return cur_size
+
 makeroom(DM, (50, 50))
 #print(DM)
 rownum = 0
